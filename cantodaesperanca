@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canto da Esperança – Beira, Moçambique</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy:     #0d1f3c;
+      --navy-mid: #162d52;
+      --navy-lt:  #1e3d6e;
+      --gold:     #c9a84c;
+      --gold-lt:  #e8cc80;
+      --gold-dk:  #a07830;
+      --cream:    #f5f0e8;
+      --white:    #ffffff;
+      --text:     #1a1a2e;
+      --muted:    #5a6a82;
+      --border:   rgba(201,168,76,0.2);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ── NAV ─────────────────────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(13,31,60,0.96);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .nav-brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--gold-lt);
+      letter-spacing: 0.04em;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--gold-lt); }
+
+    /* ── HERO ────────────────────────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(160deg, var(--navy) 0%, var(--navy-mid) 60%, #0a2a1a 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 5% 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* decorative cross motif */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 700px; height: 700px;
+      border: 1px solid rgba(201,168,76,0.07);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 400px; height: 400px;
+      border: 1px solid rgba(201,168,76,0.1);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .hero-eyebrow::before,
+    .hero-eyebrow::after {
+      content: '';
+      width: 40px; height: 1px;
+      background: var(--gold-dk);
+      display: inline-block;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.05;
+      margin-bottom: 0.3rem;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold-lt);
+    }
+
+    .hero-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 2.5rem;
+      font-style: italic;
+    }
+
+    .hero-verse {
+      max-width: 520px;
+      margin: 0 auto 3rem;
+      padding: 1.4rem 2rem;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      background: rgba(201,168,76,0.05);
+    }
+
+    .hero-verse p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-style: italic;
+      color: var(--gold-lt);
+      line-height: 1.7;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-verse cite {
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      color: var(--gold-dk);
+      text-transform: uppercase;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.8rem 2rem;
+      border-radius: 2px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-gold {
+      background: var(--gold);
+      color: var(--navy);
+    }
+    .btn-gold:hover { background: var(--gold-lt); }
+
+    .btn-outline {
+      border: 1px solid rgba(201,168,76,0.4);
+      color: var(--gold-lt);
+      background: transparent;
+    }
+    .btn-outline:hover {
+      border-color: var(--gold);
+      background: rgba(201,168,76,0.08);
+    }
+
+    /* ── SECTION BASE ────────────────────────────────────────────────────── */
+    section { padding: 100px 5%; }
+
+    .section-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold-dk);
+      font-weight: 600;
+      margin-bottom: 0.7rem;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+
+    .section-label::before {
+      content: '';
+      width: 28px; height: 1px;
+      background: var(--gold-dk);
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-title em { font-style: italic; color: var(--gold-dk); }
+
+    /* ── HISTÓRIA ────────────────────────────────────────────────────────── */
+    #historia {
+      background: var(--white);
+    }
+
+    .historia-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .historia-text p {
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+      font-size: 0.95rem;
+      line-height: 1.8;
+    }
+
+    .historia-text p strong {
+      color: var(--navy);
+      font-weight: 600;
+    }
+
+    .historia-photo {
+      background: var(--navy-lt);
+      border-radius: 4px;
+      aspect-ratio: 4/5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .historia-photo::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(201,168,76,0.05) 0%, transparent 60%);
+    }
+
+    .photo-placeholder-icon {
+      font-size: 3rem;
+      opacity: 0.4;
+    }
+
+    .photo-placeholder-text {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-align: center;
+      padding: 0 2rem;
+    }
+
+    /* ── NÚMEROS ─────────────────────────────────────────────────────────── */
+    #numeros {
+      background: var(--navy);
+    }
+
+    #numeros .section-title { color: var(--white); }
+    #numeros .section-label { color: var(--gold); }
+    #numeros .section-label::before { background: var(--gold); }
+
+    .numeros-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .numero-card {
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      background: rgba(255,255,255,0.03);
+      transition: background 0.2s;
+    }
+
+    .numero-card:hover { background: rgba(201,168,76,0.06); }
+
+    .numero-val {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--gold-lt);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+
+    .numero-label {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.08em;
+      line-height: 1.5;
+    }
+
+    /* ── PROGRAMAS ───────────────────────────────────────────────────────── */
+    #programas { background: var(--cream); }
+
+    .programas-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .programa-card {
+      background: var(--white);
+      border: 1px solid rgba(13,31,60,0.1);
+      border-radius: 4px;
+      padding: 2rem 1.8rem;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+
+    .programa-card:hover {
+      box-shadow: 0 12px 40px rgba(13,31,60,0.1);
+      transform: translateY(-3px);
+    }
+
+    .programa-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .programa-titulo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 0.7rem;
+    }
+
+    .programa-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .programa-tag {
+      display: inline-block;
+      margin-top: 1rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold-dk);
+      font-weight: 600;
+      border-bottom: 1px solid var(--gold-dk);
+      padding-bottom: 1px;
+    }
+
+    /* ── CAMPANHA ────────────────────────────────────────────────────────── */
+    #campanha {
+      background: linear-gradient(160deg, #0a1f10 0%, var(--navy) 100%);
+    }
+
+    #campanha .section-title { color: var(--white); }
+    #campanha .section-label { color: #7eb88a; }
+    #campanha .section-label::before { background: #7eb88a; }
+
+    .campanha-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      margin-top: 3rem;
+    }
+
+    .campanha-text p {
+      color: rgba(255,255,255,0.6);
+      font-size: 0.95rem;
+      line-height: 1.8;
+      margin-bottom: 1.2rem;
+    }
+
+    .campanha-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .camp-stat-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .camp-stat {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(126,184,138,0.2);
+      border-radius: 4px;
+      padding: 1.2rem;
+    }
+
+    .camp-stat.hero-stat {
+      border-color: rgba(126,184,138,0.5);
+      background: rgba(126,184,138,0.07);
+    }
+
+    .camp-lbl {
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #7eb88a;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+
+    .camp-val {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: #a8d9ae;
+      line-height: 1;
+    }
+
+    .camp-sub {
+      font-size: 0.68rem;
+      color: rgba(255,255,255,0.3);
+      margin-top: 0.3rem;
+    }
+
+    /* progress */
+    .prog-wrap {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(126,184,138,0.15);
+      border-radius: 4px;
+      padding: 1.2rem;
+    }
+
+    .prog-head {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 0.6rem;
+    }
+
+    .prog-track {
+      background: rgba(255,255,255,0.06);
+      border-radius: 999px;
+      height: 8px;
+      overflow: hidden;
+      margin-bottom: 0.5rem;
+    }
+
+    .prog-fill {
+      height: 100%;
+      width: 10%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #3a8a4c, #7eb88a);
+    }
+
+    .prog-pct {
+      font-size: 0.68rem;
+      color: #7eb88a;
+      font-weight: 600;
+    }
+
+    /* pix */
+    .pix-block {
+      background: rgba(126,184,138,0.06);
+      border: 1px solid rgba(126,184,138,0.3);
+      border-radius: 4px;
+      padding: 1.2rem;
+    }
+
+    .pix-lbl {
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #7eb88a;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+
+    .pix-key {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.2rem;
+    }
+
+    .pix-note {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.35);
+    }
+
+    /* ── APOIO ───────────────────────────────────────────────────────────── */
+    #apoio { background: var(--white); }
+
+    .apoio-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .apoio-card {
+      border: 1px solid rgba(13,31,60,0.1);
+      border-radius: 4px;
+      padding: 2rem;
+    }
+
+    .apoio-numero {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 0.7rem;
+    }
+
+    .apoio-titulo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 0.5rem;
+    }
+
+    .apoio-desc {
+      font-size: 0.83rem;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    /* ── FOOTER ──────────────────────────────────────────────────────────── */
+    footer {
+      background: var(--navy);
+      padding: 3rem 5%;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--gold-lt);
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-sub {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 0.08em;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin: 1.5rem 0;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.4);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--gold-lt); }
+
+    .footer-copy {
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.2);
+    }
+
+    /* ── DIVIDER ─────────────────────────────────────────────────────────── */
+    .gold-divider {
+      width: 48px; height: 2px;
+      background: var(--gold-dk);
+      margin: 1.5rem 0 2rem;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-brand">Canto da Esperança</a>
+  <ul class="nav-links">
+    <li><a href="#historia">História</a></li>
+    <li><a href="#programas">Programas</a></li>
+    <li><a href="#campanha">Campanha</a></li>
+    <li><a href="#apoio">Apoie</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-eyebrow">Bairro Macurungo · Beira · Moçambique</p>
+  <h1 class="hero-title">Canto da<br><em>Esperança</em></h1>
+  <p class="hero-sub">Transformando vidas pelo amor de Cristo</p>
+  <div class="hero-verse">
+    <p>"Porque sou eu que conheço os planos que tenho para vocês, planos de fazê-los prosperar e não de lhes causar dano, planos de dar a vocês esperança e um futuro."</p>
+    <cite>— Jeremias 29.11</cite>
+  </div>
+  <div class="hero-actions">
+    <a href="#campanha" class="btn btn-gold">Apoiar a Campanha</a>
+    <a href="#historia" class="btn btn-outline">Conhecer o Projeto</a>
+  </div>
+</section>
+
+<!-- HISTÓRIA -->
+<section id="historia">
+  <div class="section-inner">
+    <div class="historia-grid">
+      <div class="historia-text">
+        <p class="section-label">Nossa história</p>
+        <h2 class="section-title">Um canto de esperança<br>no <em>coração de Beira</em></h2>
+        <div class="gold-divider"></div>
+        <p>O Canto da Esperança nasceu do chamado de Deus sobre a vida de Vinicius e Francis Santos, missionários enviados pela <strong>Igreja Presbiteriana Independente de Parque Brasil</strong>, que chegaram a Beira em 2019 com uma missão clara: plantar o Evangelho e transformar vidas no Bairro Macurungo.</p>
+        <p>O que começou como um projeto social se tornou uma <strong>obra integral do Reino</strong> — com escola, alfabetização de adultos, música, juventude e, desde 29 de setembro de 2024, uma <strong>igreja local plantada</strong>: a Igreja Missão Atos Sem Fim.</p>
+        <p>Em 2024, o projeto expandiu para um novo local chamado <strong>Ngupa</strong>, onde um terreno já foi adquirido para dar continuidade à obra. O sonho agora é ter um espaço permanente para as famílias de Macurungo.</p>
+      </div>
+      <div class="historia-photo">
+        <div class="photo-placeholder-icon">📷</div>
+        <p class="photo-placeholder-text">Adicione uma foto do projeto aqui<br>no Google Sites</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NÚMEROS -->
+<section id="numeros">
+  <div class="section-inner">
+    <p class="section-label">O projeto em números</p>
+    <h2 class="section-title" style="color:var(--white)">Anos de fé<br><em>que geram fruto</em></h2>
+    <div class="numeros-grid">
+      <div class="numero-card">
+        <p class="numero-val">2019</p>
+        <p class="numero-label">Ano de chegada<br>a Moçambique</p>
+      </div>
+      <div class="numero-card">
+        <p class="numero-val">5+</p>
+        <p class="numero-label">Programas ativos<br>na comunidade</p>
+      </div>
+      <div class="numero-card">
+        <p class="numero-val">2024</p>
+        <p class="numero-label">Primeiro culto oficial<br>da Igreja Atos Sem Fim</p>
+      </div>
+      <div class="numero-card">
+        <p class="numero-val">15+</p>
+        <p class="numero-label">Anos de experiência<br>ministerial</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRAMAS -->
+<section id="programas">
+  <div class="section-inner">
+    <p class="section-label">O que fazemos</p>
+    <h2 class="section-title">Programas que<br><em>transformam vidas</em></h2>
+    <div class="programas-grid">
+      <div class="programa-card">
+        <div class="programa-icon">🏫</div>
+        <h3 class="programa-titulo">Escola Infantil</h3>
+        <p class="programa-desc">Educação pré-escolar de qualidade para crianças do bairro, oferecendo não só aprendizado mas amor, cuidado e base para o futuro.</p>
+        <span class="programa-tag">Educação</span>
+      </div>
+      <div class="programa-card">
+        <div class="programa-icon">📖</div>
+        <h3 class="programa-titulo">Alfabetização de Adultos</h3>
+        <p class="programa-desc">Aulas para adultos que nunca tiveram acesso à escola, devolvendo dignidade e abrindo portas através da leitura e escrita.</p>
+        <span class="programa-tag">Inclusão</span>
+      </div>
+      <div class="programa-card">
+        <div class="programa-icon">🎵</div>
+        <h3 class="programa-titulo">Escola de Música</h3>
+        <p class="programa-desc">Formação musical como caminho de disciplina, arte e expressão do louvor, levantando uma nova geração de adoradores.</p>
+        <span class="programa-tag">Arte e Cultura</span>
+      </div>
+      <div class="programa-card">
+        <div class="programa-icon">✂️</div>
+        <h3 class="programa-titulo">Capacitação Profissional</h3>
+        <p class="programa-desc">Cursos profissionalizantes que equipam jovens e adultos com habilidades práticas para o mercado de trabalho.</p>
+        <span class="programa-tag">Geração de Renda</span>
+      </div>
+      <div class="programa-card">
+        <div class="programa-icon">🙌</div>
+        <h3 class="programa-titulo">Ministério com Jovens</h3>
+        <p class="programa-desc">Discipulado, encontros e formação de líderes — investindo na próxima geração para que seja agente de transformação em Beira.</p>
+        <span class="programa-tag">Discipulado</span>
+      </div>
+      <div class="programa-card" style="border-color: rgba(201,168,76,0.3); background: rgba(201,168,76,0.03);">
+        <div class="programa-icon">⛪</div>
+        <h3 class="programa-titulo">Igreja Missão Atos Sem Fim</h3>
+        <p class="programa-desc">Plantada em setembro de 2024, a igreja local é o coração de toda a obra — onde o Evangelho é pregado e vidas são transformadas.</p>
+        <span class="programa-tag" style="color:var(--gold-dk); border-color:var(--gold-dk)">Igreja Local</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CAMPANHA -->
+<section id="campanha">
+  <div class="section-inner">
+    <p class="section-label" style="color:#7eb88a">Campanha do Terreno</p>
+    <h2 class="section-title" style="color:var(--white)">Levantando <em style="color:#a8d9ae">Esperança</em></h2>
+    <p style="color:rgba(255,255,255,0.5); font-style:italic; margin-bottom:0.5rem; font-family:'Cormorant Garamond',serif; font-size:1rem;">
+      "Aquele que vos chamou é fiel, e ele o fará." — 1 Ts 5.24
+    </p>
+    <div class="campanha-inner">
+      <div class="campanha-text">
+        <p>Para que o Canto da Esperança tenha um lar permanente, estamos em campanha para a compra de um terreno. Um espaço que será de toda a comunidade — para a escola, a igreja, os programas e as famílias de Macurungo.</p>
+        <p>A meta é <strong style="color:#a8d9ae">R$ 250.000</strong>. Já alcançamos R$ 25.000 — 10% da meta — e acreditamos que Deus vai prover o restante através de corações generosos ao redor do mundo.</p>
+        <p><strong style="color:#a8d9ae">Toda semente é valiosa.</strong> Doe o quanto Deus guiar seu coração.</p>
+      </div>
+      <div class="campanha-stats">
+        <div class="camp-stat-row">
+          <div class="camp-stat hero-stat">
+            <p class="camp-lbl">Arrecadado</p>
+            <p class="camp-val">R$ 25.000</p>
+            <p class="camp-sub">já recebido</p>
+          </div>
+          <div class="camp-stat">
+            <p class="camp-lbl">Ainda faltam</p>
+            <p class="camp-val" style="color:#e0956a">R$ 225.000</p>
+            <p class="camp-sub">meta: R$ 250.000</p>
+          </div>
+        </div>
+        <div class="prog-wrap">
+          <div class="prog-head">
+            <span>Progresso da campanha</span>
+            <span>10% alcançado</span>
+          </div>
+          <div class="prog-track">
+            <div class="prog-fill"></div>
+          </div>
+          <p class="prog-pct">R$ 25.000 de R$ 250.000</p>
+        </div>
+        <div class="pix-block">
+          <p class="pix-lbl">Doe agora · Chave Pix</p>
+          <p class="pix-key">terrenobeira@gmail.com</p>
+          <p class="pix-note">Qualquer valor é bem-vindo. Doe conforme Deus guiar seu coração.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APOIO -->
+<section id="apoio">
+  <div class="section-inner">
+    <p class="section-label">Como participar</p>
+    <h2 class="section-title">Três formas de<br><em>fazer parte desta obra</em></h2>
+    <div class="apoio-grid">
+      <div class="apoio-card">
+        <p class="apoio-numero">01</p>
+        <h3 class="apoio-titulo">Ore</h3>
+        <p class="apoio-desc">A oração é o fundamento de tudo. Interceda por Vinicius, Francis, pela Igreja Missão Atos Sem Fim e pelas famílias do Bairro Macurungo. Peça a Deus que abra corações e portas.</p>
+      </div>
+      <div class="apoio-card" style="border-color: rgba(201,168,76,0.3); background: rgba(201,168,76,0.02);">
+        <p class="apoio-numero">02</p>
+        <h3 class="apoio-titulo">Doe</h3>
+        <p class="apoio-desc">Contribua para a campanha do terreno via Pix: <strong>terrenobeira@gmail.com</strong>. Qualquer valor é uma semente plantada no Reino de Deus em Moçambique.</p>
+      </div>
+      <div class="apoio-card">
+        <p class="apoio-numero">03</p>
+        <h3 class="apoio-titulo">Compartilhe</h3>
+        <p class="apoio-desc">Envie esta página para amigos, familiares e igrejas. Quanto mais pessoas conhecerem o Canto da Esperança, mais sementes serão plantadas para esta obra.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p class="footer-brand">Canto da Esperança</p>
+  <p class="footer-sub">Bairro Macurungo · Beira · Moçambique</p>
+  <ul class="footer-links">
+    <li><a href="#historia">História</a></li>
+    <li><a href="#programas">Programas</a></li>
+    <li><a href="#campanha">Campanha</a></li>
+    <li><a href="#apoio">Apoie</a></li>
+  </ul>
+  <p class="footer-copy">Enviados pela Igreja Presbiteriana Independente de Parque Brasil · 2019–2025</p>
+</footer>
+
+</body>
+</html>
