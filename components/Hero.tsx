@@ -6,10 +6,10 @@ export default function Hero() {
       <div className="mx-auto flex max-w-5xl flex-col items-center gap-8 px-4 py-12 text-center sm:py-16">
         <div className="w-full max-w-sm overflow-hidden rounded-3xl border-4 border-gold/40 shadow-2xl">
           <Image
-            src="/assets/familia-placeholder.svg"
+            src="/assets/familia-missionaria.webp"
             alt="Família missionária do Canto da Esperança"
-            width={600}
-            height={600}
+            width={1000}
+            height={1083}
             className="h-auto w-full"
             priority
           />

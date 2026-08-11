@@ -56,11 +56,10 @@ npm run build   # type-check + build de produção
 
 ## O que ainda depende de você
 
-- **Assets reais**: os logos oficiais (Canto da Esperança e Missão Atos Sem
-  Fim) já estão em `/public/assets`. A foto da família ainda é um placeholder
-  (SVG) — mande o arquivo real para eu trocar.
-- **Link do grupo de oração**: configurável em `/admin/settings` (ou na
-  tabela `Setting`, chave `prayer_group_url`) sem precisar de deploy.
+- **Assets reais**: logos (Canto da Esperança e Missão Atos Sem Fim) e a foto
+  da família missionária já estão em `/public/assets`.
+- **Link do grupo de oração**: já configurado (editável em `/admin/settings`,
+  ou na tabela `Setting`, chave `prayer_group_url`, sem precisar de deploy).
 - **Credenciais reais da OpenPix**: o fluxo de pagamento ponta-a-ponta
   (QR Code, confirmação, Pix Automático) só pode ser validado de verdade
   depois que a conta OpenPix estiver configurada em produção.
