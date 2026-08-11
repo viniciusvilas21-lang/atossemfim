@@ -19,8 +19,7 @@ export default function Hero() {
             Faça parte desta missão
           </h1>
           <p className="mx-auto max-w-xl text-base text-cream/90 sm:text-lg">
-            Sua oferta, seu compromisso e suas orações ajudam a levar esperança, transformar vidas e
-            avançar o Reino de Deus em Moçambique.
+            Quem foi alcançado pela graça entende que também foi chamado a fazer o Reino avançar.
           </p>
         </div>
         <a

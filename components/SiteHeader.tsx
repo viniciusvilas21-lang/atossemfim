@@ -9,8 +9,8 @@ export default function SiteHeader() {
           <Image
             src="/assets/logo-canto-da-esperanca.webp"
             alt="Canto da Esperança"
-            width={986}
-            height={1151}
+            width={1006}
+            height={1006}
             className="h-11 w-auto"
             priority
           />
