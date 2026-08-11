@@ -2,11 +2,11 @@ export default function PatternDivider() {
   return (
     <div
       aria-hidden="true"
-      className="h-3 w-full opacity-40 sm:h-4"
+      className="h-8 w-full sm:h-10"
       style={{
         backgroundImage: "url(/assets/padrao-africano.png)",
         backgroundRepeat: "repeat",
-        backgroundSize: "56px 56px",
+        backgroundSize: "64px 64px",
       }}
     />
   );
