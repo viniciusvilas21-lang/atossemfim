@@ -1,7 +1,7 @@
 export const MIN_AMOUNT_CENTS = 500; // R$ 5,00
 export const MAX_AMOUNT_CENTS = 500_000; // R$ 5.000,00
 
-export const PRESET_AMOUNTS_CENTS = [500, 1000, 2000, 3000, 5000, 10000];
+export const PRESET_AMOUNTS_CENTS = [500, 2000, 5000, 10000, 15000, 20000];
 
 /**
  * OpenPix/Woovi charges a percentage of the transaction, clamped between a
