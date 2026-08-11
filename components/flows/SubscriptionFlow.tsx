@@ -4,12 +4,15 @@ import { useEffect, useState } from "react";
 import AmountStep from "./AmountStep";
 import RegistrationStep, { type SupporterFormData } from "./RegistrationStep";
 import SubscriptionAuthorizationScreen from "./SubscriptionAuthorizationScreen";
+import type { FeeFormula } from "@/lib/fee";
 
 type Step = "amount" | "register" | "authorize";
 
+const DEFAULT_FEE_FORMULA: FeeFormula = { percentageBasisPoints: 80, minCents: 50, maxCents: 500 };
+
 export default function SubscriptionFlow() {
   const [step, setStep] = useState<Step>("amount");
-  const [feeCents, setFeeCents] = useState(70);
+  const [feeFormula, setFeeFormula] = useState<FeeFormula>(DEFAULT_FEE_FORMULA);
   const [amount, setAmount] = useState(0);
   const [coverFee, setCoverFee] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -24,7 +27,7 @@ export default function SubscriptionFlow() {
   useEffect(() => {
     fetch("/api/settings/public")
       .then((r) => r.json())
-      .then((data) => setFeeCents(data.feeCents))
+      .then((data) => setFeeFormula(data.feeFormula))
       .catch(() => {});
   }, []);
 
@@ -85,7 +88,7 @@ export default function SubscriptionFlow() {
     <div className="mx-auto max-w-md px-4 py-10">
       {step === "amount" && (
         <AmountStep
-          feeCents={feeCents}
+          feeFormula={feeFormula}
           monthly
           onContinue={(amt, cover) => {
             setAmount(amt);

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { subscriptionRequestSchema } from "@/lib/validation";
 import { computeContributionTotal } from "@/lib/fee";
-import { getTransactionFeeCents } from "@/lib/settings";
+import { getFeeFormula } from "@/lib/settings";
 import { findOrCreateSupporter } from "@/lib/supporters";
 import { onlyDigits } from "@/lib/cpf";
 import { createSubscription, OpenPixApiError, OpenPixConfigError } from "@/lib/openpix/client";
@@ -17,8 +17,8 @@ export async function POST(request: Request) {
   }
   const { amount, coverFee, billingDay, supporter: supporterInput } = parsed.data;
 
-  const feeCents = await getTransactionFeeCents();
-  const { amount: amountOut, fee, totalAmount } = computeContributionTotal(amount, coverFee, feeCents);
+  const feeFormula = await getFeeFormula();
+  const { amount: amountOut, fee, totalAmount } = computeContributionTotal(amount, coverFee, feeFormula);
 
   const supporter = await findOrCreateSupporter({
     fullName: supporterInput.fullName,
