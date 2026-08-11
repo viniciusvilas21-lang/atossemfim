@@ -34,7 +34,8 @@ export async function POST(request: Request) {
     const { charge } = await createCharge({
       correlationID,
       valueCents: totalAmount,
-      comment: "Oferta — Canto da Esperança",
+      // Plain ASCII: OpenPix's comment validation rejects em dashes/accents as "emoji".
+      comment: "Oferta - Canto da Esperanca",
       customer: {
         name: supporter.fullName,
         email: supporter.email,
