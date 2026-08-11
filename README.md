@@ -1,7 +1,7 @@
 # Canto da Esperança — Central de Apoio à Missão
 
 Aplicação web (Next.js + Prisma/Postgres) para o link da bio do Instagram do
-projeto **Canto da Esperança** (Missão Laço sem Fim, Moçambique): apresenta a
+projeto **Canto da Esperança** (Missão Atos Sem Fim, Moçambique): apresenta a
 missão, recebe doações únicas e apoios mensais via Pix/Pix Automático da
 OpenPix, cadastra apoiadores e mantém um carrossel público que só exibe um
 nome depois que a OpenPix confirma o pagamento por webhook.
@@ -56,9 +56,9 @@ npm run build   # type-check + build de produção
 
 ## O que ainda depende de você
 
-- **Assets reais**: os logos e a foto da família em `/public/assets` são
-  placeholders (SVG) claramente identificados — substitua pelos arquivos
-  finais mantendo os mesmos nomes de arquivo, ou avise para eu trocar.
+- **Assets reais**: os logos oficiais (Canto da Esperança e Missão Atos Sem
+  Fim) já estão em `/public/assets`. A foto da família ainda é um placeholder
+  (SVG) — mande o arquivo real para eu trocar.
 - **Link do grupo de oração**: configurável em `/admin/settings` (ou na
   tabela `Setting`, chave `prayer_group_url`) sem precisar de deploy.
 - **Credenciais reais da OpenPix**: o fluxo de pagamento ponta-a-ponta

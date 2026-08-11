@@ -17,7 +17,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Canto da Esperança | Faça parte desta missão",
   description:
-    "Apoie o trabalho missionário do Canto da Esperança, da Missão Laço sem Fim, em Moçambique — com uma oferta única ou um apoio mensal via Pix.",
+    "Apoie o trabalho missionário do Canto da Esperança, da Missão Atos Sem Fim, em Moçambique — com uma oferta única ou um apoio mensal via Pix.",
 };
 
 export const viewport: Viewport = {

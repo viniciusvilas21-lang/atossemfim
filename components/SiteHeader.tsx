@@ -7,19 +7,19 @@ export default function SiteHeader() {
       <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3">
         <Link href="/" className="flex items-center gap-3">
           <Image
-            src="/assets/logo-canto-da-esperanca.svg"
+            src="/assets/logo-canto-da-esperanca.webp"
             alt="Canto da Esperança"
-            width={120}
-            height={40}
-            className="h-9 w-auto"
+            width={986}
+            height={1151}
+            className="h-11 w-auto"
             priority
           />
           <Image
-            src="/assets/logo-missao-laco-sem-fim.svg"
-            alt="Missão Laço sem Fim"
-            width={120}
-            height={40}
-            className="hidden h-9 w-auto sm:block"
+            src="/assets/logo-missao-atos-sem-fim.webp"
+            alt="Missão Atos Sem Fim"
+            width={728}
+            height={976}
+            className="hidden h-11 w-auto sm:block"
           />
         </Link>
         <a
