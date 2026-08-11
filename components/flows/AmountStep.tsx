@@ -1,14 +1,21 @@
 "use client";
 
 import { useState } from "react";
-import { PRESET_AMOUNTS_CENTS, MIN_AMOUNT_CENTS, MAX_AMOUNT_CENTS, formatBRL } from "@/lib/fee";
+import {
+  PRESET_AMOUNTS_CENTS,
+  MIN_AMOUNT_CENTS,
+  MAX_AMOUNT_CENTS,
+  formatBRL,
+  computeFee,
+  type FeeFormula,
+} from "@/lib/fee";
 
 export default function AmountStep({
-  feeCents,
+  feeFormula,
   monthly,
   onContinue,
 }: {
-  feeCents: number;
+  feeFormula: FeeFormula;
   monthly: boolean;
   onContinue: (amountCents: number, coverFee: boolean) => void;
 }) {
@@ -26,7 +33,7 @@ export default function AmountStep({
     amountCents >= MIN_AMOUNT_CENTS &&
     amountCents <= MAX_AMOUNT_CENTS;
 
-  const fee = coverFee ? feeCents : 0;
+  const fee = coverFee ? computeFee(amountCents || 0, feeFormula) : 0;
   const total = (amountCents || 0) + fee;
 
   function handleContinue() {

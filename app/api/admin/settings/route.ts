@@ -13,7 +13,9 @@ export async function GET() {
 }
 
 const patchSchema = z.object({
-  feeCents: z.number().int().min(0).max(10_000).optional(),
+  feePercentageBasisPoints: z.number().int().min(0).max(10_000).optional(),
+  feeMinCents: z.number().int().min(0).max(100_000).optional(),
+  feeMaxCents: z.number().int().min(0).max(100_000).optional(),
   prayerGroupUrl: z.string().trim().url().optional().or(z.literal("")),
 });
 
@@ -25,8 +27,14 @@ export async function PATCH(request: Request) {
       return NextResponse.json({ error: "invalid_input" }, { status: 400 });
     }
 
-    if (parsed.data.feeCents !== undefined) {
-      await setSetting(SETTING_KEYS.transactionFeeCents, String(parsed.data.feeCents));
+    if (parsed.data.feePercentageBasisPoints !== undefined) {
+      await setSetting(SETTING_KEYS.feePercentageBasisPoints, String(parsed.data.feePercentageBasisPoints));
+    }
+    if (parsed.data.feeMinCents !== undefined) {
+      await setSetting(SETTING_KEYS.feeMinCents, String(parsed.data.feeMinCents));
+    }
+    if (parsed.data.feeMaxCents !== undefined) {
+      await setSetting(SETTING_KEYS.feeMaxCents, String(parsed.data.feeMaxCents));
     }
     if (parsed.data.prayerGroupUrl !== undefined) {
       await setSetting(SETTING_KEYS.prayerGroupUrl, parsed.data.prayerGroupUrl);
