@@ -4,6 +4,7 @@ import SupportersCarousel from "@/components/SupportersCarousel";
 import SupportChoice from "@/components/SupportChoice";
 import PrayerSection from "@/components/PrayerSection";
 import SiteFooter from "@/components/SiteFooter";
+import PatternDivider from "@/components/PatternDivider";
 import { getPublicSettings } from "@/lib/settings";
 
 // The prayer-group link is admin-editable at runtime (no redeploy), so this
@@ -18,9 +19,11 @@ export default async function HomePage() {
       <SiteHeader />
       <main className="flex-1">
         <Hero />
+        <PatternDivider />
         <SupportersCarousel />
         <SupportChoice />
         <PrayerSection prayerGroupUrl={prayerGroupUrl} />
+        <PatternDivider />
       </main>
       <SiteFooter />
     </>
