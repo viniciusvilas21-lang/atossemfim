@@ -109,7 +109,7 @@ Diga ao usuario, passo a passo:
 4. **Chaves no terminal, nunca no chat.** O jeito mais facil: o usuario abre o
    terminal na pasta do projeto e roda `python .claude/skills/bybit-trader/bybit.py chaves`
    (no Windows, `python .claude\skills\bybit-trader\bybit.py chaves`). Ele cola a
-   chave e o segredo (nao aparecem na tela), o arquivo vai para
+   chave e o segredo (a tela e limpa em seguida), o arquivo vai para
    `trader-bybit/keys-testnet.json` (ou `keys-mainnet.json`; a pasta esta no
    .gitignore) e o diagnostico roda sozinho. Esse arquivo tem prioridade; sem ele,
    valem as variaveis de ambiente `BYBIT_API_KEY`/`BYBIT_API_SECRET`.

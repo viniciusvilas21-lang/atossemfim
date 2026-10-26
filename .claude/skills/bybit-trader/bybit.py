@@ -23,7 +23,6 @@ Comandos:
   chaves    o usuario cola chave e segredo (ocultos) -> trader-bybit/keys-<rede>.json
 """
 import argparse
-import getpass
 import hashlib
 import hmac
 import json
@@ -816,9 +815,13 @@ def cmd_chaves(args, cfg):
     base = venue(cfg)
     rede = "MAINNET (dinheiro real)" if base == MAINNET else "TESTNET"
     print("Salvando as chaves da %s em %s" % (rede, path(keys_file(base))))
-    print("O que voce colar NAO aparece na tela (e normal). Cole com Ctrl+V ou botao direito e aperte Enter.")
-    key = getpass.getpass("Cole a API Key: ").strip()
-    secret = getpass.getpass("Cole o Segredo: ").strip()
+    print("Cole com Ctrl+V ou com o botao direito do mouse e aperte Enter. Nao tire print desta tela.")
+    key = input("Cole a API Key: ").strip()
+    secret = input("Cole o Segredo: ").strip()
+    if os.name == "nt":
+        os.system("cls")      # tira as chaves da tela
+    else:
+        print("\033[2J\033[H", end="")
     if not key or not secret:
         raise BybitError("Chave ou segredo vazio. Nada foi salvo.")
     save_json(keys_file(base), {"key": key, "secret": secret})
