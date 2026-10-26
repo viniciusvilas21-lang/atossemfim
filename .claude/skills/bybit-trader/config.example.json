@@ -1,0 +1,19 @@
+{
+  "category": "linear",
+  "mainnet": false,
+  "watchlist": ["BTCUSDT", "ETHUSDT", "SOLUSDT", "XRPUSDT", "BNBUSDT"],
+  "interval": "60",
+  "strategies": {},
+  "risk_pct": 1.0,
+  "daily_loss_limit_pct": 3.0,
+  "max_trades_per_day": 4,
+  "max_leverage": 2,
+  "max_position_pct": 50.0,
+  "min_rr": 1.5,
+  "allow_short": true,
+  "fee_pct": null,
+  "slippage_pct": 0.02,
+  "blocked": [],
+  "max_signal_age_bars": 1,
+  "order_ttl_minutes": 15
+}

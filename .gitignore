@@ -49,3 +49,5 @@ package-lock.json
 
 # day-trader-skill working data (config, orders, state)
 /trader/
+/trader-bybit/
+__pycache__/
