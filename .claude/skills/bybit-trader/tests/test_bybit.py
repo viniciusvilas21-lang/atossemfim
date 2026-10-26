@@ -112,6 +112,15 @@ class Signing(Base):
         self.assertEqual(body, '{"symbol":"BTCUSDT","qty":"0.1"}')
         self.assertEqual(h["x-bapi-sign"], bybit.sign("SECRET", h["x-bapi-timestamp"] + "KEY5000" + body))
 
+    def test_clock_offset_from_server(self):
+        c = bybit.Client("https://x", "KEY", "SECRET")
+        self.capture({"timeSecond": "0", "timeNano": str(int((NOW + 7.5) * 1e9))})
+        self.assertEqual(c.server_offset_ms(), 7500)
+        seen = self.capture({"list": []})
+        c.private("GET", "/v5/position/list", {"category": "linear"})
+        h = {k.lower(): v for k, v in seen["req"].header_items()}
+        self.assertEqual(h["x-bapi-timestamp"], str(int(NOW * 1000) + 7500))
+
     def test_no_keys_is_refused(self):
         with self.assertRaises(bybit.BybitError):
             bybit.Client("https://x").private("GET", "/v5/account/wallet-balance", {})

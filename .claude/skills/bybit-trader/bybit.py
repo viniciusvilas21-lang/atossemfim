@@ -19,6 +19,7 @@ Comandos:
   place     envia uma ordem PASS, so com --reply "sim"
   close     fecha a posicao de um par (sempre permitido, tambem pede "sim")
   balance   saldo da conta     positions   posicoes abertas     journal   historico
+  diagnostico  testa conexao, relogio, chave e saldo, e diz onde esta o problema
 """
 import argparse
 import hashlib
@@ -156,6 +157,17 @@ def http(method, url, body=None, headers=None, timeout=20):
 class Client:
     def __init__(self, base, key=None, secret=None, recv_window=5000):
         self.base, self.key, self.secret, self.recv_window = base, key, secret, recv_window
+        self.offset_ms = None
+
+    def server_offset_ms(self):
+        """Server clock minus local clock, so a wrong PC clock does not break the signature."""
+        if self.offset_ms is None:
+            try:
+                r = self.public("/v5/market/time", {})
+                self.offset_ms = int(r["timeNano"]) // 1000000 - int(_now() * 1000)
+            except (BybitError, KeyError, ValueError, TypeError):
+                self.offset_ms = 0
+        return self.offset_ms
 
     def public(self, route, params):
         return http("GET", self.base + route + "?" + urllib.parse.urlencode(params))
@@ -164,7 +176,7 @@ class Client:
         if not (self.key and self.secret):
             raise BybitError("Faltam BYBIT_API_KEY e BYBIT_API_SECRET nas variaveis de ambiente "
                              "(digite-as no terminal, nunca no chat).")
-        ts = str(int(_now() * 1000))
+        ts = str(int(_now() * 1000) + self.server_offset_ms())
         if method == "GET":
             payload = urllib.parse.urlencode(params)
             url, body = self.base + route + ("?" + payload if payload else ""), None
@@ -746,6 +758,39 @@ def cmd_positions(args, cfg):
         print("Nenhuma posicao aberta em futuros.")
 
 
+def cmd_diagnostico(args, cfg):
+    base = venue(cfg)
+    print("rede: %s (%s)" % ("MAINNET" if base == MAINNET else "TESTNET", base))
+    client = trading_client(cfg)
+    print("chave: %d caracteres, segredo: %d caracteres (o normal e ~18 e ~36)" % (
+        len(client.key or ""), len(client.secret or "")))
+    try:
+        client.public("/v5/market/time", {})
+        print("conexao com a Bybit: OK")
+    except BybitError as e:
+        print("conexao com a Bybit: FALHOU (%s)" % e)
+        return 3
+    off = client.server_offset_ms()
+    print("relogio do computador: %+.1f s em relacao a Bybit%s" % (
+        -off / 1000, " (corrigido automaticamente)" if abs(off) > 1000 else " (ok)"))
+    try:
+        info = client.private("GET", "/v5/user/query-api", {})
+        perms = info.get("permissions") or {}
+        print("chave aceita: OK (somente leitura: %s)" % ("sim" if str(info.get("readOnly")) == "1" else "nao"))
+        for k, v in sorted(perms.items()):
+            if v:
+                print("  permissao %s: %s" % (k, ", ".join(v)))
+        if "Withdraw" in json.dumps(perms):
+            print("  ATENCAO: a chave tem permissao de SAQUE. Apague e crie outra sem saque.")
+    except BybitError as e:
+        print("chave aceita: NAO (%s)" % e)
+        print("-> o segredo provavelmente nao e o desta chave. Apague a chave na Bybit, crie outra "
+              "e salve chave e segredo de novo.")
+        return 3
+    eq, av, _ = wallet(client)
+    print("saldo: patrimonio %.2f USD, disponivel %.2f USD" % (eq, av))
+
+
 def cmd_journal(args, cfg):
     for e in load_json("journal.json", []):
         print(json.dumps(e, ensure_ascii=False))
@@ -781,6 +826,7 @@ def main(argv=None):
     sub.add_parser("balance")
     sub.add_parser("positions")
     sub.add_parser("journal")
+    sub.add_parser("diagnostico")
     args = ap.parse_args(argv)
     try:
         cfg = load_config()
