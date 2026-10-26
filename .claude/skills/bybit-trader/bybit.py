@@ -817,9 +817,14 @@ def cmd_chaves(args, cfg):
     base = venue(cfg)
     rede = "MAINNET (dinheiro real)" if base == MAINNET else "TESTNET"
     print("Salvando as chaves da %s em %s" % (rede, path(keys_file(base))))
-    print("O que voce colar NAO aparece na tela (e normal). Cole com Ctrl+V ou botao direito e aperte Enter.")
-    key = getpass.getpass("Cole a API Key: ").strip()
-    secret = getpass.getpass("Cole o Segredo: ").strip()
+    key = (os.environ.get("BYBIT_API_KEY") or "").strip()
+    secret = (os.environ.get("BYBIT_API_SECRET") or "").strip()
+    if key and secret:
+        print("Usando as chaves que ja estao salvas no Windows/terminal (BYBIT_API_KEY e BYBIT_API_SECRET).")
+    else:
+        print("O que voce colar NAO aparece na tela (e normal). Cole com Ctrl+V ou botao direito e aperte Enter.")
+        key = getpass.getpass("Cole a API Key: ").strip()
+        secret = getpass.getpass("Cole o Segredo: ").strip()
     if not key or not secret:
         raise BybitError("Chave ou segredo vazio. Nada foi salvo.")
     save_json(keys_file(base), {"key": key, "secret": secret})
