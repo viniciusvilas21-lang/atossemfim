@@ -111,8 +111,8 @@ Diga ao usuario, passo a passo:
    (no Windows, `python .claude\skills\bybit-trader\bybit.py chaves`). Ele cola a
    chave e o segredo (nao aparecem na tela), o arquivo vai para
    `trader-bybit/keys-testnet.json` (ou `keys-mainnet.json`; a pasta esta no
-   .gitignore) e o diagnostico roda sozinho. Variaveis de ambiente
-   `BYBIT_API_KEY`/`BYBIT_API_SECRET`, se existirem, tem prioridade.
+   .gitignore) e o diagnostico roda sozinho. Esse arquivo tem prioridade; sem ele,
+   valem as variaveis de ambiente `BYBIT_API_KEY`/`BYBIT_API_SECRET`.
    **Voce (Claude) nunca roda `chaves`** (ele espera digitacao do usuario), e
    **nunca abre, le, imprime, copia ou edita `trader-bybit/keys-*.json`**. Se
    faltarem chaves, diga ao usuario para rodar `chaves` no terminal dele.

@@ -134,7 +134,8 @@ class Signing(Base):
         self.assertEqual(bybit.load_keys(bybit.MAINNET)[:2], ("", ""))   # testnet keys never reach mainnet
         os.environ["BYBIT_API_KEY"], os.environ["BYBIT_API_SECRET"] = "EK", "ES"
         try:
-            self.assertEqual(bybit.load_keys(bybit.TESTNET)[:2], ("EK", "ES"))
+            self.assertEqual(bybit.load_keys(bybit.TESTNET)[:2], ("TK", "TS"))   # the file wins
+            self.assertEqual(bybit.load_keys(bybit.MAINNET)[:2], ("EK", "ES"))
         finally:
             os.environ.pop("BYBIT_API_KEY")
             os.environ.pop("BYBIT_API_SECRET")
