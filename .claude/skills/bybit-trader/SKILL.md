@@ -29,7 +29,8 @@ Esta skill ajuda o usuario a operar cripto na Bybit com regras fixas. Ela
 Sem as tres, nada e enviado. Nunca invente o "sim", nunca reaproveite um "sim"
 de outra ordem, nunca rode `place` num loop ou num agendamento.
 
-`${CLAUDE_SKILL_DIR}` e a pasta desta skill.
+`${CLAUDE_SKILL_DIR}` e a pasta desta skill. No Windows, se `python3` nao existir
+(ou abrir a Microsoft Store), use `python` nos mesmos comandos.
 
 ```bash
 python3 "${CLAUDE_SKILL_DIR}/bybit.py" backtest --write                 # testa as 3 estrategias na watchlist
