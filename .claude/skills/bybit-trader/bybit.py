@@ -140,6 +140,10 @@ def http(method, url, body=None, headers=None, timeout=20):
         if e.code == 403 and "country" in raw:
             raise BybitError("A Bybit bloqueia o pais de onde este computador acessa (HTTP 403). "
                              "Rode no seu proprio computador, nao num servidor dos EUA.")
+        if e.code == 401:
+            raise BybitError("HTTP 401: a Bybit recusou a chave. Confira: (1) chave e segredo copiados inteiros, "
+                             "sem trocar um pelo outro; (2) a chave e da mesma rede (chave da testnet so funciona "
+                             "na testnet); (3) a chave nao foi apagada; (4) o relogio do computador esta certo.")
         raise BybitError("HTTP %d: %s" % (e.code, raw[:300]))
     except urllib.error.URLError as e:
         raise BybitError("Sem conexao com a Bybit: %s" % e.reason)
@@ -188,7 +192,8 @@ def venue(cfg):
 
 
 def trading_client(cfg):
-    return Client(venue(cfg), os.environ.get("BYBIT_API_KEY"), os.environ.get("BYBIT_API_SECRET"))
+    return Client(venue(cfg), (os.environ.get("BYBIT_API_KEY") or "").strip(),
+                  (os.environ.get("BYBIT_API_SECRET") or "").strip())
 
 
 # ---------------------------------------------------------------- market data
