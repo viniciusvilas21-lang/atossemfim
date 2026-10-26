@@ -784,8 +784,13 @@ def cmd_diagnostico(args, cfg):
             print("  ATENCAO: a chave tem permissao de SAQUE. Apague e crie outra sem saque.")
     except BybitError as e:
         print("chave aceita: NAO (%s)" % e)
-        print("-> o segredo provavelmente nao e o desta chave. Apague a chave na Bybit, crie outra "
-              "e salve chave e segredo de novo.")
+        if e.code == 10003:
+            print("-> a Bybit nao reconhece esta CHAVE nesta rede: foi apagada, e de outra rede "
+                  "(mainnet x testnet) ou acabou de ser criada (espere 1-2 min). Crie outra e salve de novo.")
+        elif e.code == 10004:
+            print("-> a chave existe, mas o SEGREDO nao e o dela. Salve o segredo certo (ou crie outra chave).")
+        else:
+            print("-> apague a chave na Bybit, crie outra e salve chave e segredo de novo.")
         return 3
     eq, av, _ = wallet(client)
     print("saldo: patrimonio %.2f USD, disponivel %.2f USD" % (eq, av))
