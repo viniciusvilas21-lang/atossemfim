@@ -19,6 +19,7 @@ Comandos:
   place     envia uma ordem PASS, so com --reply "sim"
   close     fecha a posicao de um par (sempre permitido, tambem pede "sim")
   balance   saldo da conta     positions   posicoes abertas     journal   historico
+  treino    so na testnet: plano escolhido pelo usuario (compra/venda) para treinar o fluxo
   diagnostico  testa conexao, relogio, chave e saldo, e diz onde esta o problema
   chaves    o usuario cola chave e segredo (ocultos) -> trader-bybit/keys-<rede>.json
 """
@@ -674,6 +675,37 @@ def cmd_scan(args, cfg):
     print("(so aparecem pares com sinal na ultima vela fechada; nada = esperar)")
 
 
+def practice_plan(bars, side, cfg, symbol, interval):
+    """A hand-picked TESTNET trade to practise the flow: entry at the last close, stop 1.5 ATR, target 2R."""
+    if side == "Sell" and not cfg["allow_short"]:
+        raise BybitError("short nao permitido nesta configuracao (spot ou allow_short false)")
+    a = atr(bars)[-1]
+    if a is None:
+        raise BybitError("velas de menos para calcular o ATR")
+    entry, d = bars[-1]["c"], 1.5 * a
+    buy = side == "Buy"
+    return {
+        "symbol": symbol, "category": cfg["category"], "interval": interval, "strategy": "treino",
+        "side": side, "entry": entry, "stop": entry - d if buy else entry + d,
+        "target": entry + 2 * d if buy else entry - 2 * d, "rr": 2.0,
+        "why": "operacao de TREINO escolhida pelo usuario (sem sinal de estrategia)",
+        "bar_time": bars[-1]["t"], "created": _now(),
+    }
+
+
+def cmd_treino(args, cfg):
+    base = venue(cfg)
+    if base == MAINNET:
+        raise BybitError("O modo treino so funciona na TESTNET. Na conta real, so com sinal de estrategia aprovada.")
+    interval = args.interval or cfg["interval"]
+    bars = get_bars(args, cfg, args.symbol, base, 400)
+    p = practice_plan(bars, "Buy" if args.lado == "compra" else "Sell", cfg, args.symbol, interval)
+    save_json("plan.json", p)
+    print("TREINO (testnet) %s %s: entrada ~%.6g stop %.6g alvo %.6g" % (
+        "LONG" if p["side"] == "Buy" else "SHORT", args.symbol, p["entry"], p["stop"], p["target"]))
+    print("gravado em %s -> proximo passo: size" % path("plan.json"))
+
+
 def cmd_signal(args, cfg):
     interval = args.interval or cfg["interval"]
     bars = get_bars(args, cfg, args.symbol, venue(cfg), 400)
@@ -848,7 +880,10 @@ def main(argv=None):
     g.add_argument("symbol")
     g.add_argument("--strategy", default="all", choices=("all",) + STRATEGIES)
     g.add_argument("--write", action="store_true")
-    for p in (b, s, g):
+    tr = sub.add_parser("treino")
+    tr.add_argument("symbol")
+    tr.add_argument("lado", choices=("compra", "venda"))
+    for p in (b, s, g, tr):
         p.add_argument("--interval", choices=sorted(INTERVAL_MIN))
         p.add_argument("--offline", help="arquivo JSON de velas (formato da Bybit) em vez da internet")
     z = sub.add_parser("size")

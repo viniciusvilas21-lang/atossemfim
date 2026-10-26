@@ -37,6 +37,7 @@ python3 "${CLAUDE_SKILL_DIR}/bybit.py" backtest --write                 # testa 
 python3 "${CLAUDE_SKILL_DIR}/bybit.py" backtest --symbols BTCUSDT --interval 240
 python3 "${CLAUDE_SKILL_DIR}/bybit.py" scan                             # sinais agora, na ultima vela fechada
 python3 "${CLAUDE_SKILL_DIR}/bybit.py" signal BTCUSDT --write           # -> trader-bybit/plan.json
+python3 "${CLAUDE_SKILL_DIR}/bybit.py" treino BTCUSDT compra           # so testnet: treinar sem sinal
 python3 "${CLAUDE_SKILL_DIR}/bybit.py" size                             # -> trader-bybit/orders.json, PASS/BLOCK
 python3 "${CLAUDE_SKILL_DIR}/bybit.py" show
 python3 "${CLAUDE_SKILL_DIR}/bybit.py" place --index 1 --reply "sim"    # so depois do sim do usuario
@@ -71,6 +72,14 @@ operacoes para concluir. Nenhuma foi aprovada. Diga isso ao usuario com
 todas as letras e nao ajuste parametros ate algo "passar": isso e decorar o
 passado (overfitting) e costuma perder dinheiro de verdade. Rode o backtest
 de novo, com dados atuais, antes de qualquer decisao.
+
+## Modo treino (so testnet)
+
+Para treinar o fluxo sem esperar um sinal: `treino PAR compra|venda` grava um
+plano com entrada no ultimo fechamento, stop 1,5 ATR e alvo 2R; depois segue
+`size` -> `show` -> sim do usuario -> `place`, igual a uma operacao normal. Diga
+sempre que e TREINO, sem sinal de estrategia. Na mainnet o comando recusa, e
+`size` bloquearia de qualquer jeito (treino nunca e uma estrategia aprovada).
 
 ## Como conduzir uma operacao
 

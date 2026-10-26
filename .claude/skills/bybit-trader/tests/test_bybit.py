@@ -391,6 +391,24 @@ class Cli(Base):
         code, out = self.run_cli("show")
         self.assertIn("#1", out)
 
+    def test_treino_is_testnet_only(self):
+        f = os.path.join(self.tmp.name, "bars.json")
+        bars = synthetic(400)
+        with open(f, "w") as fh:
+            json.dump(bars, fh)
+        bybit._now = lambda: bars[-1]["t"] / 1000 + 3600 + 60
+        code, out = self.run_cli("treino", "BTCUSDT", "venda", "--offline", f)
+        self.assertEqual(code, 0, out)
+        p = bybit.load_json("plan.json", None)
+        self.assertEqual((p["side"], p["strategy"]), ("Sell", "treino"))
+        self.assertTrue(p["target"] < p["entry"] < p["stop"])
+        self.assertEqual(bybit.size_order(p, INST, 1000, 1000, cfg(), [])["status"], "PASS")
+        bybit.save_json("config.json", {"mainnet": True})
+        os.environ["BYBIT_MAINNET"] = "1"
+        code, out = self.run_cli("treino", "BTCUSDT", "compra", "--offline", f)
+        self.assertEqual(code, 3)
+        self.assertIn("TESTNET", out)
+
     def test_place_without_reply_is_an_error(self):
         with contextlib.redirect_stderr(io.StringIO()):
             with self.assertRaises(SystemExit):
