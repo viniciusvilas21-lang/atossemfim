@@ -46,3 +46,6 @@ next-env.d.ts
 
 # lockfile intentionally not committed in this environment — see README
 package-lock.json
+
+# day-trader-skill working data (config, orders, state)
+/trader/
