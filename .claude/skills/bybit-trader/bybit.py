@@ -20,8 +20,10 @@ Comandos:
   close     fecha a posicao de um par (sempre permitido, tambem pede "sim")
   balance   saldo da conta     positions   posicoes abertas     journal   historico
   diagnostico  testa conexao, relogio, chave e saldo, e diz onde esta o problema
+  chaves    o usuario cola chave e segredo (ocultos) -> trader-bybit/keys-<rede>.json
 """
 import argparse
+import getpass
 import hashlib
 import hmac
 import json
@@ -174,8 +176,8 @@ class Client:
 
     def private(self, method, route, params):
         if not (self.key and self.secret):
-            raise BybitError("Faltam BYBIT_API_KEY e BYBIT_API_SECRET nas variaveis de ambiente "
-                             "(digite-as no terminal, nunca no chat).")
+            raise BybitError("Faltam as chaves da API. O usuario roda no terminal dele: "
+                             "python <pasta da skill>/bybit.py chaves  (cola a chave e o segredo, nunca no chat).")
         ts = str(int(_now() * 1000) + self.server_offset_ms())
         if method == "GET":
             payload = urllib.parse.urlencode(params)
@@ -203,9 +205,24 @@ def venue(cfg):
     return TESTNET
 
 
+def keys_file(base):
+    return "keys-%s.json" % ("mainnet" if base == MAINNET else "testnet")
+
+
+def load_keys(base):
+    """Environment variables first, else trader-bybit/keys-<rede>.json (written by `chaves`)."""
+    key = (os.environ.get("BYBIT_API_KEY") or "").strip()
+    secret = (os.environ.get("BYBIT_API_SECRET") or "").strip()
+    if key and secret:
+        return key, secret, "variaveis de ambiente"
+    saved = load_json(keys_file(base), {})
+    return saved.get("key", ""), saved.get("secret", ""), path(keys_file(base))
+
+
 def trading_client(cfg):
-    return Client(venue(cfg), (os.environ.get("BYBIT_API_KEY") or "").strip(),
-                  (os.environ.get("BYBIT_API_SECRET") or "").strip())
+    base = venue(cfg)
+    key, secret, _ = load_keys(base)
+    return Client(base, key, secret)
 
 
 # ---------------------------------------------------------------- market data
@@ -762,8 +779,8 @@ def cmd_diagnostico(args, cfg):
     base = venue(cfg)
     print("rede: %s (%s)" % ("MAINNET" if base == MAINNET else "TESTNET", base))
     client = trading_client(cfg)
-    print("chave: %d caracteres, segredo: %d caracteres (o normal e ~18 e ~36)" % (
-        len(client.key or ""), len(client.secret or "")))
+    print("chave: %d caracteres, segredo: %d caracteres (o normal e ~18 e ~36), lidas de: %s" % (
+        len(client.key or ""), len(client.secret or ""), load_keys(base)[2]))
     try:
         client.public("/v5/market/time", {})
         print("conexao com a Bybit: OK")
@@ -794,6 +811,20 @@ def cmd_diagnostico(args, cfg):
         return 3
     eq, av, _ = wallet(client)
     print("saldo: patrimonio %.2f USD, disponivel %.2f USD" % (eq, av))
+
+
+def cmd_chaves(args, cfg):
+    base = venue(cfg)
+    rede = "MAINNET (dinheiro real)" if base == MAINNET else "TESTNET"
+    print("Salvando as chaves da %s em %s" % (rede, path(keys_file(base))))
+    print("O que voce colar NAO aparece na tela (e normal). Cole com Ctrl+V ou botao direito e aperte Enter.")
+    key = getpass.getpass("Cole a API Key: ").strip()
+    secret = getpass.getpass("Cole o Segredo: ").strip()
+    if not key or not secret:
+        raise BybitError("Chave ou segredo vazio. Nada foi salvo.")
+    save_json(keys_file(base), {"key": key, "secret": secret})
+    print("Salvo (chave %d caracteres, segredo %d). Testando...\n" % (len(key), len(secret)))
+    return cmd_diagnostico(args, cfg)
 
 
 def cmd_journal(args, cfg):
@@ -832,6 +863,7 @@ def main(argv=None):
     sub.add_parser("positions")
     sub.add_parser("journal")
     sub.add_parser("diagnostico")
+    sub.add_parser("chaves")
     args = ap.parse_args(argv)
     try:
         cfg = load_config()

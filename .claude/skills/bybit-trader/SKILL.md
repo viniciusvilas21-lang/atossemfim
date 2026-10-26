@@ -47,7 +47,8 @@ python3 "${CLAUDE_SKILL_DIR}/bybit.py" journal
 ```
 
 `--offline ARQUIVO` em backtest/scan/signal usa velas salvas em vez da internet.
-Estado em `trader-bybit/` (config.json, plan.json, orders.json, backtest.json, journal.json).
+Estado em `trader-bybit/` (config.json, plan.json, orders.json, backtest.json, journal.json,
+keys-*.json, que voce nunca le). `diagnostico` testa conexao, relogio, chave e saldo.
 
 ## As estrategias (e a verdade sobre elas)
 
@@ -105,12 +106,18 @@ Diga ao usuario, passo a passo:
    Permissoes: Read-Write; marcar **Contract - Orders/Positions** (futuros) e/ou
    **SPOT - Trade**. **Nunca** marcar Withdrawal/Transfer. Se possivel, restringir
    ao IP dele.
-4. **Chaves no terminal, nunca no chat:**
-   - macOS/Linux: `export BYBIT_API_KEY=...` e `export BYBIT_API_SECRET=...`
-     (ou num `.env` fora do git)
-   - Windows PowerShell: `$env:BYBIT_API_KEY="..."`
+4. **Chaves no terminal, nunca no chat.** O jeito mais facil: o usuario abre o
+   terminal na pasta do projeto e roda `python .claude/skills/bybit-trader/bybit.py chaves`
+   (no Windows, `python .claude\skills\bybit-trader\bybit.py chaves`). Ele cola a
+   chave e o segredo (nao aparecem na tela), o arquivo vai para
+   `trader-bybit/keys-testnet.json` (ou `keys-mainnet.json`; a pasta esta no
+   .gitignore) e o diagnostico roda sozinho. Variaveis de ambiente
+   `BYBIT_API_KEY`/`BYBIT_API_SECRET`, se existirem, tem prioridade.
+   **Voce (Claude) nunca roda `chaves`** (ele espera digitacao do usuario), e
+   **nunca abre, le, imprime, copia ou edita `trader-bybit/keys-*.json`**. Se
+   faltarem chaves, diga ao usuario para rodar `chaves` no terminal dele.
    Se o usuario colar uma chave no chat, mande apagar a mensagem e gerar outra.
-   Nunca peca, leia ou repita chaves.
+   Nunca peca, leia ou repita chaves. Para conferir a configuracao, use `diagnostico`.
 5. **Config:** `mkdir trader-bybit && cp "${CLAUDE_SKILL_DIR}/config.example.json" trader-bybit/config.json`,
    e ajustar `category` (`linear` = futuros, `spot`), `watchlist`, `interval`,
    `risk_pct` (% do patrimonio perdido se bater o stop) e os limites diarios.

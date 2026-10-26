@@ -125,6 +125,20 @@ class Signing(Base):
         with self.assertRaises(bybit.BybitError):
             bybit.Client("https://x").private("GET", "/v5/account/wallet-balance", {})
 
+    def test_keys_from_file_per_network(self):
+        os.environ.pop("BYBIT_API_KEY", None)
+        os.environ.pop("BYBIT_API_SECRET", None)
+        self.assertEqual(bybit.load_keys(bybit.TESTNET)[:2], ("", ""))
+        bybit.save_json("keys-testnet.json", {"key": "TK", "secret": "TS"})
+        self.assertEqual(bybit.load_keys(bybit.TESTNET)[:2], ("TK", "TS"))
+        self.assertEqual(bybit.load_keys(bybit.MAINNET)[:2], ("", ""))   # testnet keys never reach mainnet
+        os.environ["BYBIT_API_KEY"], os.environ["BYBIT_API_SECRET"] = "EK", "ES"
+        try:
+            self.assertEqual(bybit.load_keys(bybit.TESTNET)[:2], ("EK", "ES"))
+        finally:
+            os.environ.pop("BYBIT_API_KEY")
+            os.environ.pop("BYBIT_API_SECRET")
+
     def test_mainnet_needs_both_switches(self):
         self.assertEqual(bybit.venue(cfg()), bybit.TESTNET)
         with self.assertRaises(bybit.BybitError):
